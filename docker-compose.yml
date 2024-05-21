@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  redis:
+    image: redis:4.0-alpine
+  db:
+    image: postgres:14.2-alpine
+    container_name: myapp-postgres-14.2
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    command: "postgres -c 'max_connections=500'"
+    environment:
+      POSTGRES_DB: myappdb
+      POSTGRES_USER: my_user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+  web:
+    build: .
+    command: bash -c "bundle exec rails server -b 0.0.0.0 -p 3000"
+    restart: always
+    volumes:
+      - .:/votacao
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    links:
+      - db
+    environment:
+      DB_HOST: db
+      DB_NAME: myappdb
+      DB_USERNAME: my_user
+      DB_PASSWORD: password
+volumes:
+  postgres_data: {}
+networks:
+  default:
+    name: votacao_default
