@@ -3,4 +3,9 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
+  post '/participant', to: 'participants#create'
+  post '/poll', to: 'polls#create'
+  get '/poll', to: 'polls#show'
+  post '/vote', to: 'votes#create'
+  get  '/stats', to: 'polls#current_poll_stats'
 end

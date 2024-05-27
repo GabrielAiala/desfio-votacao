@@ -15,8 +15,11 @@ module Votacao
     #
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
-    #
+
+    config.middleware.use Rack::Attack
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    # config.action_controller.default_url_options = { host: ENV["HOST"], port: ENV["PORT"] }
+     config.api_only = true
   end
 end
